@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">QuantifiedSkinDemo</string>
+    <string name="feature_not_supported">Feature not supported in demo</string>
+    <string name="edit_not_supported">Edit not supported in demo</string>
+    <string name="app_camera_requirement">This app needs camera hardware</string>
+    <string name="app_internet_requirement">This app needs Internet Connectivity</string>
+    <string name="begin_demo">Begin Demo</string>
+    <string name="logo">Logo</string>
+</resources>
