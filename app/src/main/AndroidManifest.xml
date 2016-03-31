@@ -25,7 +25,8 @@
         <meta-data
             android:name="com.parse.CLIENT_KEY"
             android:value="GBWbvfGGJxKxiWZnRAOyDyjc60pHJJQNzKVagBjN" />
-        <activity android:name=".Activity.SplashScreen">
+        <activity android:name=".Activity.SplashScreen"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

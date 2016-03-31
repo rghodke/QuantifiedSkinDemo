@@ -1,9 +1,11 @@
 package com.quantifiedskin.demo.quantifiedskindemo.Activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -12,7 +14,9 @@ import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 
@@ -35,7 +39,7 @@ import Helper.JSONParser;
 import Helper.JSONReader;
 
 
-public class CameraActivity extends AppCompatActivity {
+public class CameraActivity extends Activity {
     /*
     Source: http://developer.android.com/training/camera/photobasics.html
      */
@@ -160,7 +164,6 @@ public class CameraActivity extends AppCompatActivity {
         file.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                System.out.println("TAG!!!!");
                 new GetGenderAsync().execute(file.getUrl());
             }
         });
@@ -168,12 +171,14 @@ public class CameraActivity extends AppCompatActivity {
 
     private class GetGenderAsync extends AsyncTask<String, Integer, JSONObject> {
 
+        private ProgressBar progressBar = (ProgressBar) findViewById(R.id.progress);
+
         protected JSONObject doInBackground(String... urls) {
             JSONReader jsonReader = new JSONReader();
             return jsonReader.readObject(urls[0]);
         }
 
-        protected void onProgressUpdate(Integer...integers) {
+        protected void onProgressUpdate(Integer...progress) {
         }
 
         protected void onPostExecute(JSONObject response) {
@@ -181,8 +186,23 @@ public class CameraActivity extends AppCompatActivity {
             String answer = null;
             try{
                 answer = jsonParser.parseJSONfile(response);
-                System.out.println(answer);}
+                System.out.println(answer);
+                progressBar.setVisibility(View.INVISIBLE);
+                setImage(answer);
+            }
             catch (JSONException je){}
         }
     }
+
+    private void setImage(String gender){
+        ImageView toolImage = (ImageView) findViewById(R.id.toolImage);
+        toolImage.setVisibility(View.VISIBLE);
+        if(gender.equals("Male")){
+            toolImage.setImageResource(R.drawable.razor);
+        }
+        else if(gender.equals("Female")){
+            toolImage.setImageResource(R.drawable.mascara);
+        }
+    }
+
 }
