@@ -1,8 +1,7 @@
-package Helper;
+package helper;
 
 import android.util.Log;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -36,13 +35,15 @@ public class JSONReader {
         InputStream inputStream = null;
         String result = null;
         HttpURLConnection urlConnection;
-        String jsonURL = "https://faceplusplus-faceplusplus.p.mashape.com/detection/detect?attribute=gender&url="+imageURL;
+        String jsonURL = "https://faceplusplus-faceplusplus.p.mashape.com/detection" +
+                "/detect?attribute=gender&url=" + imageURL;
         try {
             //Form a url from the string passed in
             URL url = new URL(jsonURL);
             //Get the text input from the url
             urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestProperty("X-Mashape-Key", "oE931Xl6kLmshWPXhGr3MJIJj2djp13CuyNjsnm7fNQKvdP528");
+            urlConnection.setRequestProperty("X-Mashape-Key",
+                    "oE931Xl6kLmshWPXhGr3MJIJj2djp13CuyNjsnm7fNQKvdP528");
             inputStream = new BufferedInputStream(urlConnection.getInputStream());
             // read the json data that is UTF-8 by default
             BufferedReader reader = new BufferedReader(
@@ -58,6 +59,58 @@ public class JSONReader {
             urlConnection.disconnect();
 
         } catch (IOException ioe) {
+            Log.e("URL ERROR", "getWebInfo: ", ioe);
+        } finally { //Close the inputStream
+            try {
+                if (inputStream != null) inputStream.close();
+            } catch (IOException ioe) {
+                Log.e("inputStream ERROR", "getWebInfo: ", ioe);
+            }
+        }
+        try {
+            //Return the JSONArray generated from the string retrieved
+            JSONObject jObject = new JSONObject(result);
+            return jObject;
+        } catch (JSONException je) {
+            Log.e("ERROR", "getJsonInfo: ", je);
+            je.printStackTrace();
+        }
+        return null;
+    }
+
+    /*
+    Returns a JSONObject object based on the data found at the hardcoded parse jsonURL.
+    We can update the file regularly to add new quotes or material such as sales
+
+    @return         The JSONObject located at specified url
+     */
+    public JSONObject readQuotes() {
+        InputStream inputStream = null;
+        String result = null;
+        HttpURLConnection urlConnection;
+        String jsonURL = "http://files.parsetfss.com/5c06e99d-ed03-4816-8b2e-da8f1091ce26/" +
+                "tfss-dd27eecb-a0a2-451f-8ba8-e6fda01d7492-selflove.json";
+        try {
+            //Form a url from the string passed in
+            URL url = new URL(jsonURL);
+            //Get the text input from the url
+            urlConnection = (HttpURLConnection) url.openConnection();
+            inputStream = new BufferedInputStream(urlConnection.getInputStream());
+            // read the json data that is UTF-8 by default
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(inputStream, "UTF-8"), 8);
+            //Store the result into a string
+            StringBuilder sb = new StringBuilder();
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line + "\n");
+            }
+            result = sb.toString();
+            //Disconnect the connection
+            urlConnection.disconnect();
+
+        } catch (IOException ioe) {
+            result = "{}";
             Log.e("URL ERROR", "getWebInfo: ", ioe);
         } finally { //Close the inputStream
             try {
