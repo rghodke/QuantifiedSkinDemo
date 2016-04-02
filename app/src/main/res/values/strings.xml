@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">QuantifiedSkinDemo</string>
+    <string name="app_camera_requirement">This app needs camera hardware</string>
+    <string name="app_internet_requirement">This app needs Internet Connectivity</string>
+    <string name="parse_fail">Parse Account Creation Failed</string>
+    <string name="begin_demo">Begin Demo</string>
+    <string name="logo">Logo</string>
+    <string name="selfie">Selfie Image</string>
+    <string name="switch_camera">Switch Camera</string>
+    <string name="take_picture">Take Picture</string>
+
+</resources>
